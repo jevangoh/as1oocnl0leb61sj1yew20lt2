@@ -1,0 +1,40 @@
+name: Update PyPI Index
+
+on:
+  repository_dispatch:
+    types: [package-released]
+  workflow_dispatch: # Enables manual triggers from the GitHub UI for testing
+    inputs:
+      package_name:
+        description: 'Package Name'
+        required: true
+      tag:
+        description: 'Release Tag'
+        required: true
+      whl_url:
+        description: 'URL to whl'
+        required: true
+      tar_url:
+        description: 'URL to tarball'
+        required: true        
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PyPI Server Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Pixi
+        uses: prefix-dev/setup-pixi@v0.8.1
+
+      - name: Update Index Files via Pixi
+        run: |
+          pixi run -e dev insert_package \
+            --package "${{ github.event.client_payload.package_name || inputs.package_name }}" \
+            --tag "${{ github.event.client_payload.tag || inputs.tag }}" \
+            --whl_url "${{ github.event.client_payload.whl_url || inputs.whl_url }}" \
+            --tar_url "${{ github.event.client_payload.tar_url || inputs.tar_url }}"
