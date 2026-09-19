@@ -68,8 +68,10 @@ def update_pypi_index(
 
     if new_entries:
         block = "\n".join(new_entries) + "\n"
-        if "</body>" in pkg_html:
-            pkg_html = pkg_html.replace("</body>", f"{block}  </body>")
+        if "  </body>" in pkg_html:
+            pkg_html = pkg_html.replace("  </body>", f"{block}  </body>")
+        elif "</body>" in pkg_html:
+            pkg_html = pkg_html.replace("</body>", f"{block}</body>")
         else:
             pkg_html += f"\n{block}"
         pkg_index.write_text(pkg_html, encoding="utf-8")
