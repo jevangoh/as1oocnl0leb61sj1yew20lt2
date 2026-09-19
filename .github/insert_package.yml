@@ -16,7 +16,11 @@ on:
         required: true
       tar_url:
         description: 'URL to tarball'
-        required: true        
+        required: true
+
+concurrency:
+  group: pypi-index-update
+  cancel-in-progress: false        
 
 permissions:
   contents: write
