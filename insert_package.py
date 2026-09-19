@@ -110,7 +110,7 @@ def main():
     args = parser.parse_args()
 
     update_pypi_index(
-        package_name=args.package,
+        package_name=args.package_name,
         tag=args.tag,
         whl_url=args.whl_url,
         tar_url=args.tar_url,
