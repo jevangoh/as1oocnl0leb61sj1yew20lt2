@@ -67,13 +67,24 @@ def update_pypi_index(
         new_entries.append(f"    {tar_link}")
 
     if new_entries:
+        # Check if previous release links already exist in the file
+        has_existing_links = "<a href" in pkg_html
+
+        # Base block of entries
         block = "\n".join(new_entries) + "\n"
+
+        # Prepend a newline only if there are already existing versions
+        if has_existing_links:
+            block = "\n" + block
+
+        # Insert before closing tag
         if "  </body>" in pkg_html:
             pkg_html = pkg_html.replace("  </body>", f"{block}  </body>")
         elif "</body>" in pkg_html:
             pkg_html = pkg_html.replace("</body>", f"{block}</body>")
         else:
             pkg_html += f"\n{block}"
+
         pkg_index.write_text(pkg_html, encoding="utf-8")
         print(
             f"Added version {version} links to {package_name}/index.html"
