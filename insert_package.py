@@ -87,7 +87,7 @@ def main():
         description="Update PEP 503 PyPI static index HTML files."
     )
     parser.add_argument(
-        "--package",
+        "--package_name",
         required=True,
         help="Package name",
     )

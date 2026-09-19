@@ -34,7 +34,7 @@ jobs:
       - name: Update Index Files via Pixi
         run: |
           pixi run -e dev insert_package \
-            --package "${{ github.event.client_payload.package_name || inputs.package_name }}" \
+            --package_name "${{ github.event.client_payload.package_name || inputs.package_name }}" \
             --tag "${{ github.event.client_payload.tag || inputs.tag }}" \
             --whl_url "${{ github.event.client_payload.whl_url || inputs.whl_url }}" \
             --tar_url "${{ github.event.client_payload.tar_url || inputs.tar_url }}"
